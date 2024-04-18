@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_metatube_app/pages/home_page.dart';
+import 'package:flutter_metatube_app/bindings/bindings.dart';
+import 'package:flutter_metatube_app/routes/routes.dart';
+import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -8,6 +10,7 @@ void main() async {
 
   WindowOptions windowOptions = const WindowOptions(
     size: Size(1200, 800),
+    minimumSize: Size(800, 600),
     center: true,
     title: "MetaTube",
   );
@@ -25,13 +28,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'MetaTube',
       theme: ThemeData(
         useMaterial3: true,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      initialBinding: ControllerBindings(),
+      initialRoute: AppRoutes.HOMEPAGEROUTE,
+      getPages: AppRoutes.routes,
     );
   }
 }
