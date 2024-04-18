@@ -2,11 +2,13 @@ import 'package:flutter_metatube_app/pages/home_page.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
-  static const HOMEPAGEROUTE = "/home";
+  /// Route constant for the home page
+  static const homePageRoute = "/home";
 
-  static final routes = [
+  /// List of the routes for the application
+  static final List<GetPage> routes = [
     GetPage(
-      name: HOMEPAGEROUTE,
+      name: homePageRoute,
       page: () => const HomePage(),
     ),
   ];

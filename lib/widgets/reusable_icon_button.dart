@@ -11,9 +11,16 @@ class ReusableIconButton extends StatelessWidget {
     this.splashColor,
   });
 
+  /// Callback function to be executed when the button is tapped
   final GestureTapCallback onTap;
+
+  /// Icon to be displayed on the button
   final IconData icon;
+
+  /// Color of the icon
   final Color? color;
+
+  /// Splash color of the button
   final Color? splashColor;
 
   @override

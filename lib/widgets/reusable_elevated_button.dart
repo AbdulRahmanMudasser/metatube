@@ -8,7 +8,10 @@ class ReusableElevatedButton extends StatelessWidget {
     required this.title,
   });
 
+  /// Callback function to be executed when the button is tapped
   final GestureTapCallback onTap;
+
+  /// Title text to be displayed on the button
   final String title;
 
   @override

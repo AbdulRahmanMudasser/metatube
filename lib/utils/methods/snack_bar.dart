@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class SnackBarUtils {
-  static showSuccessSnackBar(IconData icon, String message) {
+  /// Display a success snackbar with icon and message
+  static void showSuccessSnackBar(IconData icon, String message) {
+    // Dismiss any existing snackbar
     Get.back();
 
+    // Show the success snackbar
     Get.showSnackbar(
       GetSnackBar(
         icon: Icon(

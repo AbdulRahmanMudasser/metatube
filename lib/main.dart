@@ -4,22 +4,28 @@ import 'package:flutter_metatube_app/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 
-void main() async {
+Future<void> main() async {
+  // Ensure that the widgets binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the window manager
   await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions(
+  // Define window options
+  const windowOptions = WindowOptions(
     size: Size(1200, 800),
     minimumSize: Size(800, 600),
     center: true,
     title: "MetaTube",
   );
 
+  // Wait until the window is ready to show
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
     await windowManager.focus();
   });
 
+  // Run the application
   runApp(const MyApp());
 }
 
@@ -36,7 +42,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       initialBinding: ControllerBindings(),
-      initialRoute: AppRoutes.HOMEPAGEROUTE,
+      initialRoute: AppRoutes.homePageRoute,
       getPages: AppRoutes.routes,
     );
   }

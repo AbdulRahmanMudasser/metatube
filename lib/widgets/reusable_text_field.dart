@@ -18,13 +18,28 @@ class ReusableTextField extends StatelessWidget {
     required this.focusNode,
   });
 
+  /// Maximum length of the text field
   final int maxLength;
+
+  /// Maximum lines the text field can have
   final int? maxLines;
+
+  /// Hint text to be displayed when the text field is empty
   final String hintText;
+
+  /// Controller for the text field
   final TextEditingController textEditingController;
+
+  /// Callback function when the suffix icon is tapped
   final GestureTapCallback onTap;
+
+  /// Color of the icon associated with the text field
   final Color iconColor;
-  final Function(String)? onChanged;
+
+  /// Callback when the text in the text field is changed
+  final Function(String) onChanged;
+
+  /// Focus node for the text field
   final FocusNode focusNode;
 
   @override
@@ -48,25 +63,20 @@ class ReusableTextField extends StatelessWidget {
           icon: Icons.content_copy_rounded,
           color: iconColor,
         ),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.medium),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.medium),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.accent),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.accent),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.medium),
-        ),
-        disabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.medium),
-        ),
+        border: _outlineInputBorder(AppColors.medium),
+        enabledBorder: _outlineInputBorder(AppColors.medium),
+        focusedBorder: _outlineInputBorder(AppColors.accent),
+        focusedErrorBorder: _outlineInputBorder(AppColors.accent),
+        errorBorder: _outlineInputBorder(AppColors.medium),
+        disabledBorder: _outlineInputBorder(AppColors.medium),
       ),
+    );
+  }
+
+  /// Creates an Outline Input Border with the specified color
+  OutlineInputBorder _outlineInputBorder(Color color) {
+    return OutlineInputBorder(
+      borderSide: BorderSide(color: color),
     );
   }
 }

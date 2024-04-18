@@ -5,69 +5,37 @@ import 'package:flutter_metatube_app/utils/styles/app_colors.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  // text editing controller
+  /// Text Editing Controllers
   late TextEditingController titleTextEditingController;
   late TextEditingController descriptionTextEditingController;
   late TextEditingController tagsTextEditingController;
 
-  // focus node
+  /// Focus Nodes
   late FocusNode titleFocusNode;
   late FocusNode descriptionFocusNode;
   late FocusNode tagsFocusNode;
 
-  Rx<Color> titleTextFieldIconColor = AppColors.medium.obs;
-  Rx<Color> descriptionTextFieldIconColor = AppColors.medium.obs;
-  Rx<Color> tagsTextFieldIconColor = AppColors.medium.obs;
-
-  // method to focus on next widget
-  focusToNext() {
-    FocusScope.of(Get.context!).nextFocus();
-  }
-
-  // method to copy text field context to clipboard
-  copyContentToClipboard(String content) {
-    Clipboard.setData(
-      ClipboardData(text: content),
-    );
-
-    SnackBarUtils.showSuccessSnackBar(
-      Icons.content_copy_rounded,
-      "Copied to Clipboard",
-    );
-  }
-
-  titleTextFieldOnChanged(String value) {
-    if (value.isNotEmpty) {
-      titleTextFieldIconColor.value = AppColors.accent;
-    } else {
-      titleTextFieldIconColor.value = AppColors.medium;
-    }
-  }
-
-  descriptionTextFieldOnChanged(String value) {
-    if (value.isNotEmpty) {
-      descriptionTextFieldIconColor.value = AppColors.accent;
-    } else {
-      descriptionTextFieldIconColor.value = AppColors.medium;
-    }
-  }
-
-  tagsTextFieldOnChanged(String value) {
-    if (value.isNotEmpty) {
-      tagsTextFieldIconColor.value = AppColors.accent;
-    } else {
-      tagsTextFieldIconColor.value = AppColors.medium;
-    }
-  }
+  /// Reactive Variables for Text Field Icon Colors
+  final titleIconColor = AppColors.medium.obs;
+  final descriptionIconColor = AppColors.medium.obs;
+  final tagsIconColor = AppColors.medium.obs;
 
   @override
   void onInit() {
     super.onInit();
+    _initializeControllers();
+    _initializeFocusNodes();
+  }
 
+  /// Initialize text editing controllers
+  void _initializeControllers() {
     titleTextEditingController = TextEditingController();
     descriptionTextEditingController = TextEditingController();
     tagsTextEditingController = TextEditingController();
+  }
 
+  /// Initialize focus nodes
+  void _initializeFocusNodes() {
     titleFocusNode = FocusNode();
     descriptionFocusNode = FocusNode();
     tagsFocusNode = FocusNode();
@@ -75,14 +43,57 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    _disposeControllers();
+    _disposeFocusNodes();
+    super.onClose();
+  }
+
+  /// Dispose text editing controllers
+  void _disposeControllers() {
     titleTextEditingController.dispose();
     descriptionTextEditingController.dispose();
     tagsTextEditingController.dispose();
+  }
 
+  /// Dispose focus nodes
+  void _disposeFocusNodes() {
     titleFocusNode.dispose();
     descriptionFocusNode.dispose();
     tagsFocusNode.dispose();
+  }
 
-    super.onClose();
+  /// Move focus to the next text field
+  focusToNext() {
+    FocusScope.of(Get.context!).nextFocus();
+  }
+
+  /// Copy the given content to the clipboard and show a success snackbar
+  void copyContentToClipboard(String content) {
+    Clipboard.setData(ClipboardData(text: content));
+    SnackBarUtils.showSuccessSnackBar(
+      Icons.content_copy_rounded,
+      "Copied to Clipboard",
+    );
+  }
+
+  copyOnlyIfTextFieldIsNotEmpty(TextEditingController controller) {
+    if (controller.text.isNotEmpty) {
+      copyContentToClipboard(controller.text);
+    }
+  }
+
+  /// Updates the title text field icon color based on the text field value
+  updateTitleIconColor(String value) {
+    titleIconColor.value = value.isNotEmpty ? AppColors.accent : AppColors.medium;
+  }
+
+  /// Updates the description text field icon color based on the text field value
+  updateDescriptionIconColor(String value) {
+    descriptionIconColor.value = value.isNotEmpty ? AppColors.accent : AppColors.medium;
+  }
+
+  /// Updates the tags  text field icon color based on the text field value
+  updateTagsIconColor(String value) {
+    tagsIconColor.value = value.isNotEmpty ? AppColors.accent : AppColors.medium;
   }
 }
