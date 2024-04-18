@@ -1,4 +1,4 @@
-# flutter_metatube_app
+# Flutter MetaTube Application
 
 A new Flutter project.
 
