@@ -9,7 +9,7 @@ class ReusableElevatedButton extends StatelessWidget {
   });
 
   /// Callback function to be executed when the button is tapped
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
   /// Title text to be displayed on the button
   final String title;
@@ -17,7 +17,7 @@ class ReusableElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => onTap,
+      onPressed: onTap,
       style: AppButtonStyles.elevatedButtonStyle,
       child: Text(title),
     );

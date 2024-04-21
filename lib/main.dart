@@ -35,13 +35,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: ControllerBindings(),
       title: 'MetaTube',
       theme: ThemeData(
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      initialBinding: ControllerBindings(),
       initialRoute: AppRoutes.homePageRoute,
       getPages: AppRoutes.routes,
     );

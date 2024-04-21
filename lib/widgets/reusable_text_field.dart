@@ -14,7 +14,7 @@ class ReusableTextField extends StatelessWidget {
     required this.textEditingController,
     required this.onTap,
     required this.iconColor,
-    required this.onChanged,
+    // required this.onChanged,
     required this.focusNode,
   });
 
@@ -37,7 +37,7 @@ class ReusableTextField extends StatelessWidget {
   final Color iconColor;
 
   /// Callback when the text in the text field is changed
-  final Function(String) onChanged;
+  // final Function(String) onChanged;
 
   /// Focus node for the text field
   final FocusNode focusNode;
@@ -53,7 +53,7 @@ class ReusableTextField extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       cursorColor: AppColors.accent,
       style: AppTextStyles.lightTextStyle,
-      onChanged: onChanged,
+      // onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: AppTextStyles.mediumTextStyle,

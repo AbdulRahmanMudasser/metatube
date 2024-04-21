@@ -20,6 +20,29 @@ class SnackBarUtils {
         duration: const Duration(seconds: 2),
         maxWidth: Get.width / 3,
         borderRadius: 4,
+        margin: const EdgeInsets.only(bottom: 10),
+      ),
+    );
+  }
+
+  /// Display a error snackbar with icon and message
+  static void showErrorSnackBar(IconData icon, String message) {
+    // Dismiss any existing snackbar
+    Get.back();
+
+    // Show the error snackbar
+    Get.showSnackbar(
+      GetSnackBar(
+        icon: Icon(
+          icon,
+          color: Colors.red,
+        ),
+        message: message,
+        shouldIconPulse: false,
+        duration: const Duration(seconds: 2),
+        maxWidth: Get.width / 3,
+        borderRadius: 4,
+        margin: const EdgeInsets.only(bottom: 10),
       ),
     );
   }
