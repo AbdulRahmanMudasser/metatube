@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_metatube_app/services/file_sevice.dart';
 import 'package:flutter_metatube_app/utils/methods/snack_bar.dart';
 import 'package:flutter_metatube_app/utils/styles/app_colors.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+  /// Instance of Home Controller
+  static HomeController controller = Get.find<HomeController>();
+
   /// Text Editing Controllers
   late TextEditingController titleTextEditingController;
   late TextEditingController descriptionTextEditingController;
@@ -31,7 +33,7 @@ class HomeController extends GetxController {
   final isSaveButtonEnabled = false.obs;
 
   /// Instance of File Service Class
-  final fileService = FileService();
+  // final fileService = FileService();
 
   @override
   void onInit() {
@@ -189,9 +191,14 @@ class HomeController extends GetxController {
   }
 
   /// Save File Locally
-  saveFile() {
-    if (isSaveButtonEnabled.value) {
-      fileService.saveFile(Get.find<HomeController>());
-    }
-  }
+  // saveFile() {
+  //   if (isSaveButtonEnabled.value) {
+  //     fileService.saveFile(Get.find<HomeController>());
+  //   }
+  // }
+
+  /// Load File to Application
+  // loadFile() {
+  //   fileService.loadFile(Get.find<HomeController>());
+  // }
 }

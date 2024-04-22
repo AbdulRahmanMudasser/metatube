@@ -5,7 +5,7 @@ class AppTextStyles {
   /// Text style for light-themed text
   static TextStyle lightTextStyle = const TextStyle(
     color: AppColors.light,
-    fontSize: 20,
+    fontSize: 18,
   );
 
   /// Text style for medium-themed text
