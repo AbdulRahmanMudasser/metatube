@@ -14,24 +14,24 @@ class FileService {
   String _selectedDirectory = '';
 
   /// Instance of Home Controller for accessing input fields
-  final _controller = HomeController.controller;
+  // final _controller = HomeController.controller;
 
   /// Method to save the file
-  Future<void> saveFile() async {
+  Future<void> saveFile(HomeController controller) async {
     // Grab the video title from title text field
-    final title = _controller.titleTextEditingController.text;
+    final title = controller.titleTextEditingController.text;
 
     // Grab the video description from the description text field
-    final description = _controller.descriptionTextEditingController.text;
+    final description = controller.descriptionTextEditingController.text;
 
     // Grab the video chapters from the chapters text field
-    final chapters = _controller.chaptersTextEditingController.text;
+    final chapters = controller.chaptersTextEditingController.text;
 
     // Grab the resources & links used in the video from the resources & links text field
-    final resourceLinks = _controller.resourceLinksTextEditingController.text;
+    final resourceLinks = controller.resourceLinksTextEditingController.text;
 
     // Grab the video tags from tags text field
-    final tags = _controller.tagsTextEditingController.text;
+    final tags = controller.tagsTextEditingController.text;
 
     // Formatted file contents
     final fileContent = _formatFileContent(
@@ -144,7 +144,7 @@ class FileService {
   }
 
   /// Method to load & read the file
-  Future<void> loadFile() async {
+  Future<void> loadFile(HomeController controller) async {
     try {
       // Prompts the user to select a file
       FilePickerResult? filePickerResult = await _pickFile();
@@ -167,7 +167,7 @@ class FileService {
         final splittedFileContent = _splitFileContent(fileContent);
 
         // Populate text field from splitted file content
-        _populateTextFieldsWithSplittedContent(_controller, splittedFileContent);
+        _populateTextFieldsWithSplittedContent(controller, splittedFileContent);
 
         // Display a success snackbar
         SnackBarUtils.showSuccessSnackBar(Icons.upload_file, "File Loaded");
@@ -214,6 +214,23 @@ class FileService {
     controller.chaptersTextEditingController.text = _getValueFromSplittedContent(splittedFileContent, 5);
     controller.resourceLinksTextEditingController.text = _getValueFromSplittedContent(splittedFileContent, 7);
     controller.tagsTextEditingController.text = _getValueFromSplittedContent(splittedFileContent, 9);
+  }
+
+  /// Method to create a new file
+  void createFile(HomeController controller) {
+    // Make the selected file variable null
+    _resetSelectedFile();
+
+    // Make the controllers null
+    controller.clearAllTextEditingControllers();
+
+    // Show success snackbar
+    SnackBarUtils.showSuccessSnackBar(Icons.note_add, 'New File Created');
+  }
+
+  /// Method to make the selected file null
+  void _resetSelectedFile() {
+    _selectedFile = null;
   }
 
   /// '''

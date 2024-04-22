@@ -4,6 +4,8 @@ import 'package:flutter_metatube_app/utils/methods/snack_bar.dart';
 import 'package:flutter_metatube_app/utils/styles/app_colors.dart';
 import 'package:get/get.dart';
 
+import '../services/file_service.dart';
+
 class HomeController extends GetxController {
   /// Instance of Home Controller
   static HomeController controller = Get.find<HomeController>();
@@ -33,7 +35,7 @@ class HomeController extends GetxController {
   final isSaveButtonEnabled = false.obs;
 
   /// Instance of File Service Class
-  // final fileService = FileService();
+  final fileService = FileService();
 
   @override
   void onInit() {
@@ -190,15 +192,27 @@ class HomeController extends GetxController {
         tagsTextEditingController.text.isNotEmpty;
   }
 
-  /// Save File Locally
-  // saveFile() {
-  //   if (isSaveButtonEnabled.value) {
-  //     fileService.saveFile(Get.find<HomeController>());
-  //   }
-  // }
+  /// Method to clear all the text fields
+  void clearAllTextEditingControllers() {
+    titleTextEditingController.clear();
+    descriptionTextEditingController.clear();
+    chaptersTextEditingController.clear();
+    resourceLinksTextEditingController.clear();
+    tagsTextEditingController.clear();
+  }
 
-  /// Load File to Application
-  // loadFile() {
-  //   fileService.loadFile(Get.find<HomeController>());
-  // }
+  /// Save File
+  saveFile() {
+    fileService.saveFile(controller);
+  }
+
+  /// Load File
+  loadFile() {
+    fileService.loadFile(controller);
+  }
+
+  /// Create File
+  createFile() {
+    fileService.createFile(controller);
+  }
 }
