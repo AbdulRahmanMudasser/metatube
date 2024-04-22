@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_metatube_app/controllers/home_controller.dart';
-import 'package:flutter_metatube_app/services/file_service.dart';
 import 'package:flutter_metatube_app/utils/styles/app_colors.dart';
 import 'package:flutter_metatube_app/widgets/reusable_elevated_button.dart';
 import 'package:flutter_metatube_app/widgets/reusable_text_field.dart';
@@ -13,8 +12,6 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    FileService fileService = FileService();
-
     return Scaffold(
       backgroundColor: AppColors.dark,
       body: Padding(
@@ -27,14 +24,14 @@ class HomePage extends GetView<HomeController> {
                 children: [
                   // Button for new file
                   ReusableElevatedButton(
-                    onTap: () {},
+                    onTap: () => controller.createFile(),
                     title: "New File",
                   ),
                   Row(
                     children: [
                       // Button to upload file
                       ReusableIconButton(
-                        onTap: () => fileService.loadFile(),
+                        onTap: () => controller.loadFile(),
                         icon: Icons.file_upload,
                       ),
                       const SizedBox(width: 8),
@@ -132,9 +129,7 @@ class HomePage extends GetView<HomeController> {
 
                     // Button to save file
                     ReusableElevatedButton(
-                      onTap: controller.isSaveButtonEnabled.value
-                          ? () => fileService.saveFile()
-                          : null,
+                      onTap: controller.isSaveButtonEnabled.value ? () => controller.saveFile() : null,
                       title: "Save File",
                     ),
                   ],
