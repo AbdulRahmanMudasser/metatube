@@ -37,7 +37,7 @@ class HomePage extends GetView<HomeController> {
                       const SizedBox(width: 8),
                       // Button to open folder
                       ReusableIconButton(
-                        onTap: () {},
+                        onTap: () => controller.changeDirectory(),
                         icon: Icons.folder,
                       ),
                     ],

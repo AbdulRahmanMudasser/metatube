@@ -215,4 +215,9 @@ class HomeController extends GetxController {
   createFile() {
     fileService.createFile(controller);
   }
+
+  /// Change Directory
+  changeDirectory() {
+    fileService.changeDirectory();
+  }
 }

@@ -16,7 +16,6 @@ class FileService {
   /// Instance of Home Controller for accessing input fields
   // final _controller = HomeController.controller;
 
-  /// Method to save the file
   Future<void> saveFile(HomeController controller) async {
     // Grab the video title from title text field
     final title = controller.titleTextEditingController.text;
@@ -43,17 +42,22 @@ class FileService {
     );
 
     try {
+      bool directorySelected = await _getSaveDirectoryPath();
+
+      if (!directorySelected) {
+        // Handle case where no directory was selected
+        SnackBarUtils.showErrorSnackBar(Icons.error_rounded, "No Directory Selected");
+        return; // Exit the method early
+      }
+
       if (_selectedFile != null) {
         // If a file is selected,
         // Write content to that file
         await _writeToFile(_selectedFile!, fileContent);
       } else {
         // If no file is selected,
-        // Determine the save directory
-        final directoryPath = await _getSaveDirectoryPath();
-
         // Generate a file name
-        final fileName = _generateFileName(title, directoryPath);
+        final fileName = _generateFileName(title);
 
         // Create a file from file name
         final file = _createFile(fileName);
@@ -65,8 +69,11 @@ class FileService {
       // Display a success snackbar
       SnackBarUtils.showSuccessSnackBar(Icons.check_circle, "File Saved");
     } catch (exception) {
+      // Exception was thrown from this method
+      _exceptionThrownMethod("SaveFile");
+
       // Handle exception
-      _handleException(exception, "Failed to Save File");
+      _handleException("saving", exception, "Failed to Save File");
     }
   }
 
@@ -94,53 +101,56 @@ class FileService {
   }
 
   /// Method to get the save directory
-  Future<String> _getSaveDirectoryPath() async {
-    if (_selectedDirectory.isEmpty) {
-      // Prompts user to select a directory
-      final directory = await FilePicker.platform.getDirectoryPath();
+  Future<bool> _getSaveDirectoryPath() async {
+    try {
+      if (_selectedDirectory.isEmpty) {
+        // Selecting a default directory
+        // Prompts the user to select a directory
+        final directory = await FilePicker.platform.getDirectoryPath();
 
-      // Assign the directory selected by the user
-      _selectedDirectory = directory!;
+        if (directory != null && directory.isNotEmpty) {
+          // If user has selected a directory
+          _selectedDirectory = directory;
+          return true;
+        }
+      } else {
+        // Selecting a new directory
+        final previousDirectory = _selectedDirectory;
+
+        // Reset the selected directory
+        _resetSelectedDirectory();
+
+        // Prompts the user to select a new directory
+        final directory = await FilePicker.platform.getDirectoryPath();
+
+        if (directory != null && directory.isNotEmpty) {
+          // If user has selected a directory
+          _selectedDirectory = directory;
+          return true;
+        } else {
+          // If user has not selected a directory
+          _selectedDirectory = previousDirectory;
+          return false;
+        }
+      }
+    } catch (exception) {
+      // Exception was thrown from this method
+      _exceptionThrownMethod("GetSaveDirectoryPath");
+
+      // Handle exception
+      _handleException("select directory", exception, "Failed to Get Directory Path");
+      return false;
     }
-
-    return _selectedDirectory;
+    return false;
   }
 
-  /// Method to get the save directory
-  // Future<String> _getSaveDirectoryPath() async {
-  //   if (_selectedDirectory.isEmpty) {
-  //     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-  //       // For Desktop Platforms
-  //       // Prompts user to select a directory
-  //       final directory = await FilePicker.platform.getDirectoryPath();
-  //
-  //       // Assign the directory selected by the user
-  //       _selectedDirectory = directory!;
-  //     } else {
-  //       // For Web Platforms
-  //       _selectedDirectory = _getWebDirectoryPath();
-  //     }
-  //   }
-  //
-  //   return _selectedDirectory;
-  // }
-
-  /// Method to get directory in web
-  // String _getWebDirectoryPath() {
-  //   if (html.window.localStorage['saveDirectory'] != null) {
-  //     return html.window.localStorage['saveDirectory']!;
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
   /// Method to generate the file name
-  String _generateFileName(String title, String directoryPath) {
+  String _generateFileName(String title) {
     // Save file with today's date
     final todayDate = DateFormatUtils.formatDate();
 
     // Returns the File Name
-    return "$directoryPath/$todayDate - $title - MetaTube.txt";
+    return "$_selectedDirectory/$todayDate - $title - MetaTube.txt";
   }
 
   /// Method to load & read the file
@@ -177,8 +187,11 @@ class FileService {
         SnackBarUtils.showErrorSnackBar(Icons.error_rounded, "No File Selected");
       }
     } catch (exception) {
+      // Exception was thrown from this method
+      _exceptionThrownMethod("LoadFile");
+
       // Handle exception
-      _handleException(exception, "Failed to Load File");
+      _handleException("load", exception, "Failed to Load File");
     }
   }
 
@@ -221,31 +234,67 @@ class FileService {
     // Make the selected file variable null
     _resetSelectedFile();
 
-    // Make the controllers null
+    // Make all the controllers null
     controller.clearAllTextEditingControllers();
 
-    // Show success snackbar
+    // Display the success snackbar
     SnackBarUtils.showSuccessSnackBar(Icons.note_add, 'New File Created');
   }
 
-  /// Method to make the selected file null
-  void _resetSelectedFile() {
-    _selectedFile = null;
+  /// Method to null the current directory
+  void _resetSelectedDirectory() {
+    _selectedDirectory = '';
+  }
+
+  /// Method to change the directory
+  Future<void> changeDirectory() async {
+    try {
+      // Prompts the user to selects a directory
+      bool directorySelected = await _getSaveDirectoryPath();
+
+      if (!directorySelected) {
+        // Handle case where no directory was selected
+        SnackBarUtils.showErrorSnackBar(Icons.error, "No Directory Selected");
+        return; // Exit the method early
+      }
+
+      // Reset the selected file
+      _resetSelectedFile();
+
+      // Display the success snackbar
+      SnackBarUtils.showSuccessSnackBar(Icons.folder_open, "Directory Selected");
+    } catch (exception) {
+      // Exception was thrown from this method
+      _exceptionThrownMethod("ChangeDirectory");
+
+      // Handle exception
+      _handleException("select directory", exception, "Failed to Select Directory");
+    }
   }
 
   /// '''
   /// Commonly Used Helper Methods
   /// '''
 
+  /// Method to make the selected file null
+  void _resetSelectedFile() {
+    _selectedFile = null;
+  }
+
   /// Create a file from file path or file name
   File _createFile(String filePath) {
     return File(filePath);
   }
 
+  /// Method to indicate from which method exception was thrown
+  void _exceptionThrownMethod(String method) {
+    debugPrint("The Exception Was Thrown From This '$method()'");
+  }
+
   /// Method to handle exceptions and display error snackbar
-  void _handleException(dynamic exception, String message) {
+  void _handleException(String operation, dynamic exception, String message) {
     // Print the exception to the log
-    debugPrint("The following exception occurred while trying to save the file:\n\n$exception");
+    debugPrint("The following exception occurred while trying to $operation the file:\n\n$exception");
 
     // Display a error snackbar if something goes wrong
     SnackBarUtils.showErrorSnackBar(Icons.error, message);
