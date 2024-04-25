@@ -12,4 +12,11 @@ class AppTextStyles {
   static TextStyle mediumTextStyle = const TextStyle(
     color: AppColors.medium,
   );
+
+  /// Text style for splash page
+  static TextStyle splashTextStyle = const TextStyle(
+    color: AppColors.accent,
+    fontSize: 25,
+    fontWeight: FontWeight.w500,
+  );
 }
